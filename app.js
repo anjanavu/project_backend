@@ -9,7 +9,7 @@ require('dotenv').config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
-
+app.use(express.static(path.join(__dirname,'/build')));
 const userRoute = require('./routes/userRoute');
 app.use('/user', userRoute);
 
@@ -18,7 +18,9 @@ const examRouter = require('./routes/examRoute');
 app.use('/exam', examRouter);
 const studentRouter = require('./routes/studentRoute');
 app.use('/student', studentRouter);
-
+app.get('/*',function(req,res){
+  res.sendFile(path.join(__dirname,'/build/index.html'));
+})
 mongoose.connect(process.env.MONGODB_URL, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
