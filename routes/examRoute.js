@@ -49,6 +49,18 @@ router.get('/batch/:batchId',verifyToken, async (req, res) => {
   }
 });
 
+router.get('/batch/:batchId/name', verifyToken, async (req, res) => {
+  try {
+    const { batchId } = req.params;
+    const batchDetails = await batchData.findById(batchId);
+
+    res.json({ name: batchDetails.batchName });
+  } catch (error) {
+    console.error("Error occurred while fetching batch name:", error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 const { Types } = require('mongoose');
 
 router.post('/upload-result/:batchId', verifyToken, async (req, res) => {
