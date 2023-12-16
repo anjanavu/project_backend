@@ -30,8 +30,7 @@ router.get('/batch', verifyToken, async (req, res) => {
 router.get('/batch/:batchId',verifyToken, async (req, res) => {
   try {
     const { batchId } = req.params;
-    console.log('Received batchId:', batchId);
-    const batchDetails = await batchData.findById(batchId); 
+
     const students = await examData.find({ batchId })
       .populate('studentId', ['name', 'email', 'exitTestConfirmation', 'status']);
 
@@ -42,9 +41,7 @@ router.get('/batch/:batchId',verifyToken, async (req, res) => {
       res.header('Content-Type', 'text/csv');
       res.send(csvData.join("\n"));
     } else {
-      const responseData = { batchDetails, students };
-      console.log(responseData)
-      res.json(responseData);
+      res.json(students);
     }
   } catch (error) {
     console.error("Error occurred while fetching students:", error);
